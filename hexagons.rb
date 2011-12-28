@@ -3,19 +3,18 @@ require 'cartodb-rb-client'
 
 #coordinates of each hexagon
 def hexagon length, x_start, y_start
-  hex = []
-  hex << [length + x_start, y_start]
-  hex << [((length/2) + x_start), (length * Math.sqrt(3/2)) + y_start]
-  hex << [((-length/2) + x_start), (length * Math.sqrt(3/2)) + y_start]
-  hex << [(-length + x_start), y_start]
-  hex << [(-length/2 + x_start), (-length * Math.sqrt(3/2)) + y_start]
-  hex << [(length/2) + x_start, (-length * Math.sqrt(3/2)) + y_start]
-  hex << [length + x_start, y_start]
-  hex
+  hex = [[length + x_start, y_start],
+        [((length/2) + x_start), (length * Math.sqrt(length/2)) + y_start],
+        [((-length/2) + x_start), (length * Math.sqrt(length/2)) + y_start],
+        [(-length + x_start), y_start],
+        [(-length/2 + x_start), (-length * Math.sqrt(length/2)) + y_start],
+        [(length/2) + x_start, (-length * Math.sqrt(length/2)) + y_start],
+        [length + x_start, y_start]]
+
 end
 
 #will be used to make a feature collection of individual polygons rather than one feature of multipolygons
-def generate_polygons
+def generate_polygons2
 
   #container to hold the full file
   geojson = {"type" => "FeatureCollection"}
@@ -51,14 +50,17 @@ def generate_multihex length, bbox
     while current_pos[1] > bbox[2]
       features << [hexagon(length, current_pos[0], current_pos[1])]
       current_pos = [current_pos[0], current_pos[1] - length * 2]   
+      puts current_pos[1]
     end
+    
+    
 
     #shift the hexagon creation to the next column with a shift in the y to nest them
     if up
       current_pos = [current_pos[0] + length*1.5, bbox[3]]
       up = false
     else
-      current_pos = [current_pos[0] + length*1.5, bbox[3] + (length * Math.sqrt(3/2))]
+      current_pos = [current_pos[0] + length*1.5, bbox[3] + (length * Math.sqrt(length/2.0))]
       up = true
     end
   end
@@ -78,10 +80,14 @@ def store_to_cartodb geojson
   # puts "creating table"
   # CartoDB::Connection.create_table 'test_hex', [{:name => 'new_id', :type => 'text'}], 'MULTIPOLYGON'
   puts "inserting geom"
-  CartoDB::Connection.query "INSERT INTO tesselace (the_geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326))"
+  puts "ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326)"
+  
+  #this doesn't work at the moment- need to look more closely at the cartodb gem
+  #CartoDB::Connection.insert_row 'tesselace', :the_geom => "ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326)"
+  # CartoDB::Connection.query "INSERT INTO tesselace (the_geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326))"
 
 end
 
 
 
-generate_multihex 2, [0,10,0,10]
+generate_multihex 2.0, [3.0,10.0,3.0,10.0]
