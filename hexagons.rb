@@ -49,7 +49,7 @@ def generate_multihex length, bbox
   while current_pos[0] < bbox[1] 
     while current_pos[1] > bbox[2]
       features << [hexagon(length, current_pos[0], current_pos[1])]
-      current_pos = [current_pos[0], current_pos[1] - length * 2]   
+      current_pos = [current_pos[0], current_pos[1] - ((length * Math.sqrt(length / 2)) * 2)]   
       puts current_pos[1]
     end
     
