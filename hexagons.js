@@ -1,20 +1,23 @@
 jQuery.noConflict();
 var $j = jQuery;
+var geojsonLayer = new L.GeoJSON();
+var map;
 
 $j(document).ready(function() {
 	"use strict";
-	var map = new L.Map('map');
-
-	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-		cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+	map = new L.Map('map', {
+	    center: new L.LatLng(51.505, -0.09), 
+	    zoom: 13,
+			zoomControl: false
+	});
+	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/14682/256/{z}/{x}/{y}.png',
 		cloudmade = new L.TileLayer(cloudmadeUrl, {
-		maxZoom: 18,
-		attribution: cloudmadeAttribution
+		maxZoom: 18
 	});
 
-	map.setView(new L.LatLng(0, 0), 6).addLayer(cloudmade);
+	map.setView(new L.LatLng(0, 0), 4).addLayer(cloudmade);
 
-	var geojsonLayer = new L.GeoJSON();
+	
 	map.addLayer(geojsonLayer);
 
 	geojsonLayer.on("featureparse", function(e) {
@@ -83,22 +86,29 @@ function generate_multihex(length, bbox) {
 			"properties": {
 				"prop1": 0.0,
 				"style": {
-					"color": "#DA5B38",
-					"weight": 0.1,
-					"opacity": 1
+					"color": "#CA432D",
+					"weight": 1,
+					"opacity": 0.9,
+					"fillOpacity": 0.4,
+					"fillColor": "#F8EED3"
 				}
 			}
 		}]
 	};
 
 	return geojson;
-
+//F8EED3  78ADA4  CA432D
 }
 
 
 
 function test_hex() {
 	"use strict";
-	var result = generate_multihex(1, [-179.0, 179.0, -89.0, 89.0]);
+	var result = generate_multihex(2, [-179.0, 179.0, -89.0, 89.0]);
 	return result;
+}
+
+function set_layer(length){	
+	geojsonLayer.clearLayers();
+	geojsonLayer.addGeoJSON(generate_multihex(length, [-179.0, 179.0, -89.0, 89.0]));
 }
