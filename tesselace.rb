@@ -2,12 +2,14 @@ require 'sinatra'
 require 'json'
 
 
-get 'hex/:size' do 
+get '/hex/:size' do 
   #[xmin, xmax, ymin, ymax]
   
   #convert 
   generate_multihex params[:size].to_f, [-179,179,-89,89]
 end
+
+
 
 #coordinates of each hexagon
 def hexagon length, x_start, y_start
