@@ -1,5 +1,5 @@
 require 'json'
-require 'cartodb-rb-client'
+
 
 #coordinates of each hexagon
 def hexagon length, x_start, y_start
@@ -73,20 +73,7 @@ def generate_multihex length, bbox
   
 end
 
-def store_to_cartodb geojson
-  
-  puts "connecting to cartodb"
-  CartoDB::Init.start YAML.load_file('con.yml')
-  # puts "creating table"
-  # CartoDB::Connection.create_table 'test_hex', [{:name => 'new_id', :type => 'text'}], 'MULTIPOLYGON'
-  puts "inserting geom"
-  puts "ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326)"
-  
-  #this doesn't work at the moment- need to look more closely at the cartodb gem
-  #CartoDB::Connection.insert_row 'tesselace', :the_geom => "ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326)"
-  # CartoDB::Connection.query "INSERT INTO tesselace (the_geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('#{geojson}'), 4326))"
 
-end
 
 
 
