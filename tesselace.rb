@@ -2,6 +2,10 @@ require 'sinatra'
 require 'json'
 
 
+get '/' do
+  File.read(File.join('public', 'hexagons.html'))
+end
+
 get '/hex/:size' do 
   #[xmin, xmax, ymin, ymax]
   
