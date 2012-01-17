@@ -78,6 +78,7 @@
     border-left: 170px solid black;
 		position:absolute;
 		bottom:0px;
+		z-index: 899; 
 	}
 	
 	.arrow-top-left {
@@ -87,6 +88,7 @@
 		border-top: 170px solid black;
 		position:absolute;
 		top:0px;
+		z-index: 898; 
 	}
 	
 	.arrow-bottom-right {
@@ -97,7 +99,7 @@
 		position:absolute;
 		bottom:0px;
 		right:0px;
-		z-index: 999;
+		z-index: 897;
 	}
 	
 	.arrow-top-right {
@@ -108,6 +110,7 @@
 		position:absolute;
 		top:0px;
 		right:0px;
+		z-index: 896;
 	}
 
 	
