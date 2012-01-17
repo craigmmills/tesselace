@@ -64,6 +64,13 @@
 		padding-left:33px;
 	}
 	
+	#other_links {
+		padding-left:0px;
+		position: absolute;
+		left: -33px;
+		
+	}
+	
 	.arrow-bottom-left {
     width: 0;
     height: 0;
