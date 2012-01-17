@@ -111,5 +111,5 @@ function set_layer(length){
 	geojsonLayer.addGeoJSON(generate_multihex(length, [-179.0, 179.0, -89.0, 89.0]));
 	var hn = window.location.hostname;
 	georef = "http://" + hn + "/hex/" + length;	
-	$j("#geolink").html("<a href='" + georef + "'>geojson</p>");
+	$j("#geolink").html("<a href='" + georef + "'>geojson</a>");
 }
